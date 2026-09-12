@@ -1,5 +1,5 @@
-const PRODUCTOS_API_URL = import.meta.env.VITE_PRODUCTOS_API_URL || "http://localhost:8001";
-const USUARIOS_API_URL = import.meta.env.VITE_USUARIOS_API_URL || "http://localhost:8002";
+const PRODUCTOS_API_URL = import.meta.env.VITE_PRODUCTOS_API_URL || "http://34.204.20.226:8001";
+const USUARIOS_API_URL = import.meta.env.VITE_USUARIOS_API_URL || "http://34.204.20.226:8002";
 
 async function request(url, options) {
   const res = await fetch(url, options);
