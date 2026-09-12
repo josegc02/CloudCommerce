@@ -5,6 +5,57 @@ Levanta los 2 microservicios de esta primera entrega junto con sus bases de dato
 - `mysql-productos` (MySQL) + `ms-productos` (FastAPI, puerto 8001)
 - `postgres-usuarios` (PostgreSQL) + `ms-usuarios` (Spring Boot, puerto 8002)
 
+## Error de build: `No space left on device` (EC2)
+
+Este error indica que el almacenamiento usado por Docker se quedó sin espacio
+o sin inodos. No es un error de compilación Java. Ejecuta en la VM:
+
+```bash
+df -h
+df -i
+docker info --format '{{.DockerRootDir}}'
+docker system df
+```
+
+Comprueba el filesystem que contiene el directorio de Docker indicado arriba.
+Para recuperar espacio de compilaciones anteriores, elimina la caché de build
+no utilizada (Docker pedirá confirmación):
+
+```bash
+docker builder prune -a
+df -h
+```
+
+Esto elimina cachés reutilizables, incluyendo dependencias de Maven, que se
+descargarán nuevamente. No elimina los volúmenes de MySQL/PostgreSQL.
+No uses `docker compose down -v` ni limpiezas de volúmenes para solucionar
+este problema: contienen los datos de las bases de datos.
+
+Si el disco sigue lleno, amplía el volumen EBS y luego la partición y el
+filesystem dentro de Linux siguiendo la
+[guía de AWS](https://docs.aws.amazon.com/ebs/latest/userguide/recognize-expanded-volume-linux.html).
+Los nombres de dispositivo y el comando dependen de la VM (`lsblk -f`, `df -hT`);
+ampliar solo el volumen en la consola no garantiza que Linux use el espacio nuevo.
+
+Con espacio disponible y los archivos actualizados en la VM, compila los servicios
+uno por uno para reducir el consumo simultáneo de recursos:
+
+```bash
+cd ~/CloudCommerce/backend/docker-compose
+docker compose build ms-usuarios &&
+docker compose build ms-productos &&
+docker compose up -d --no-build
+docker compose ps
+```
+
+El Dockerfile de usuarios usa una caché de BuildKit para Maven y compila directamente,
+sin la descarga adicional de `dependency:go-offline`. La caché sigue ocupando disco,
+pero no se guarda dentro de las capas de la imagen. Los `.dockerignore` excluyen
+artefactos locales del contexto de build. Estas medidas reducen espacio utilizado;
+no sustituyen disponer de capacidad suficiente para imágenes, caché y bases de datos.
+
+Referencia: [caché de Docker](https://docs.docker.com/build/cache/optimize/).
+
 ## Uso
 
 ```bash
