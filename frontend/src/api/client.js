@@ -1,5 +1,13 @@
-const PRODUCTOS_API_URL = import.meta.env.VITE_PRODUCTOS_API_URL || "https://uhxzs5j1jf.execute-api.us-east-1.amazonaws.com/";
-const USUARIOS_API_URL = import.meta.env.VITE_USUARIOS_API_URL || "https://zgg68hih37.execute-api.us-east-1.amazonaws.com/";
+//const PRODUCTOS_API_URL = import.meta.env.VITE_PRODUCTOS_API_URL || "https://uhxzs5j1jf.execute-api.us-east-1.amazonaws.com/";
+//const USUARIOS_API_URL = import.meta.env.VITE_USUARIOS_API_URL || "https://zgg68hih37.execute-api.us-east-1.amazonaws.com/";
+const PRODUCTOS_API_URL =
+  import.meta.env.VITE_PRODUCTOS_API_URL ||
+  "https://g30st0hfx5.execute-api.us-east-1.amazonaws.com/";
+
+const USUARIOS_API_URL =
+  import.meta.env.VITE_USUARIOS_API_URL ||
+  "https://clyet1t216.execute-api.us-east-1.amazonaws.com/";
+
 
 async function request(url, options) {
   const res = await fetch(url, options);
