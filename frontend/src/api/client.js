@@ -1,5 +1,5 @@
-const PRODUCTOS_API_URL = import.meta.env.VITE_PRODUCTOS_API_URL || "http://34.204.20.226:8001";
-const USUARIOS_API_URL = import.meta.env.VITE_USUARIOS_API_URL || "http://34.204.20.226:8002";
+const PRODUCTOS_API_URL = import.meta.env.VITE_PRODUCTOS_API_URL || "https://uhxzs5j1jf.execute-api.us-east-1.amazonaws.com/";
+const USUARIOS_API_URL = import.meta.env.VITE_USUARIOS_API_URL || "https://zgg68hih37.execute-api.us-east-1.amazonaws.com/";
 
 async function request(url, options) {
   const res = await fetch(url, options);
